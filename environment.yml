@@ -1,0 +1,17 @@
+name: finance_env
+channels:
+  - defaults
+dependencies:
+  - python=3.12
+  - pandas
+  - scikit-learn
+  - pytorch=2.6
+  - ipykernel
+  - absl-py
+  - ml_dtypes
+  - transformers
+  - matplotlib
+  - requests
+  - beautifulsoup4
+  - lxml
+prefix: 

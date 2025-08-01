@@ -1,0 +1,12 @@
+# Ignore environment variables file
+.env.local
+.env
+# Ignore the database file
+*.db
+
+# Ignore Python cache files
+__pycache__/
+fine_tuned_categorizer/
+logs_finbert/
+results_finbert/
+tmp_trainer/
