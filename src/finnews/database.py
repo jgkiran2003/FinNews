@@ -1,6 +1,7 @@
 import sqlite3
+import os
 
-DB_FILE = "processed_articles.db"
+DB_FILE = os.path.join("data", "processed_articles.db")
 
 def setup_database():
     """Create the database and table if they don't exist."""

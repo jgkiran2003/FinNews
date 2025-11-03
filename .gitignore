@@ -1,35 +1,46 @@
 # Environment and local configuration
 .env*
-*.db
 environment.yml
+venv/
+.python-version
+
+# Data and databases
+data/
+*.db
 
 # Python cache files
 __pycache__/
 *.py[cod]
 *$py.class
+.pytest_cache/
 
 # VS Code settings
 .vscode/
 .github/copilot-instructions.md
 
-# Local model files and checkpoints
+# Model files and checkpoints
 checkpoint-*/
 *.bin
 *.pth
 *.safetensors
+*.onnx
+model_weights/
 
 # Logs and temporary files
 logs/
 tmp/
 *.log
 
-# Ignore all notebooks
-*.ipynb
-
 # Development and training files
 dev/checkpoints/
 dev/logs/
 dev/models/
+dev/data/*.csv
 
-# Ignore local model folder
+# Models and artifacts
 sentiment_analysis_model/
+fine_tuned_*/
+
+# Notebooks (except specific ones we want to keep)
+*.ipynb
+!dev/notebooks/*.ipynb
