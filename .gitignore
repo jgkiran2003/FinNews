@@ -1,12 +1,35 @@
-# Ignore environment variables file
-.env.local
-.env
-# Ignore the database file
+# Environment and local configuration
+.env*
 *.db
+environment.yml
 
-# Ignore Python cache files
+# Python cache files
 __pycache__/
-fine_tuned_categorizer/
-logs_finbert/
-results_finbert/
-tmp_trainer/
+*.py[cod]
+*$py.class
+
+# VS Code settings
+.vscode/
+.github/copilot-instructions.md
+
+# Local model files and checkpoints
+checkpoint-*/
+*.bin
+*.pth
+*.safetensors
+
+# Logs and temporary files
+logs/
+tmp/
+*.log
+
+# Ignore all notebooks
+*.ipynb
+
+# Development and training files
+dev/checkpoints/
+dev/logs/
+dev/models/
+
+# Ignore local model folder
+sentiment_analysis_model/

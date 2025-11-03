@@ -1,7 +1,7 @@
 import torch
 from transformers import AutoTokenizer, AutoModelForSequenceClassification
 
-model_path = "./fine_tuned_categorizer" 
+model_path = "./sentiment_analysis_model" 
 tokenizer = AutoTokenizer.from_pretrained(model_path)
 model = AutoModelForSequenceClassification.from_pretrained(model_path)
 
