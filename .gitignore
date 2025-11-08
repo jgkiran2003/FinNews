@@ -44,3 +44,6 @@ fine_tuned_*/
 # Notebooks (except specific ones we want to keep)
 *.ipynb
 !dev/notebooks/*.ipynb
+
+# Reference projects
+reference/
