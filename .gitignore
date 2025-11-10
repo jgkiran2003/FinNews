@@ -47,3 +47,6 @@ fine_tuned_*/
 
 # Reference projects
 reference/
+
+# Work in progress
+db_alchemy.py
