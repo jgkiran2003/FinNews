@@ -2,7 +2,9 @@ import os, sqlite3, json
 from datetime import datetime, timezone
 from typing import Any, Dict, Optional, List
 
+# Resolve paths
 DB_PATH = "storage/finnews.db"
+SCHEMA_PATH = os.path.join(os.path.dirname(__file__), "schema.sql")
 os.makedirs(os.path.dirname(DB_PATH), exist_ok=True)
 
 ISO_FMT = "%Y-%m-%dT%H:%M:%SZ"
@@ -19,57 +21,28 @@ def get_conn() -> sqlite3.Connection:
     conn.execute("PRAGMA journal_mode = WAL;")
     return conn
 
-# ---------------------------------------------------------------------------
-# Schema setup
-# ---------------------------------------------------------------------------
-
-SCHEMA_SQL = """
-CREATE TABLE IF NOT EXISTS articles (
-    id INTEGER PRIMARY KEY,
-    provider TEXT NOT NULL,
-    external_id TEXT,
-    url TEXT NOT NULL UNIQUE,
-    title TEXT NOT NULL,
-    published_at TEXT,
-    source TEXT,
-    language TEXT,
-    tickers_json TEXT,
-    raw_json TEXT NOT NULL,
-    inserted_at TEXT NOT NULL
-);
-CREATE INDEX IF NOT EXISTS ix_articles_published ON articles(published_at);
-CREATE INDEX IF NOT EXISTS ix_articles_provider ON articles(provider);
-
-CREATE TABLE IF NOT EXISTS sentiments (
-    id INTEGER PRIMARY KEY,
-    article_id INTEGER NOT NULL REFERENCES articles(id) ON DELETE CASCADE,
-    engine TEXT NOT NULL,
-    score REAL,
-    label TEXT,
-    inserted_at TEXT NOT NULL
-);
-CREATE INDEX IF NOT EXISTS ix_sentiments_article ON sentiments(article_id);
-
-CREATE TABLE IF NOT EXISTS price_moves (
-    id INTEGER PRIMARY KEY,
-    article_id INTEGER NOT NULL REFERENCES articles(id) ON DELETE CASCADE,
-    symbol TEXT NOT NULL,
-    t0_utc TEXT NOT NULL,
-    t0_px REAL NOT NULL,
-    tN_utc TEXT NOT NULL,
-    tN_px REAL NOT NULL,
-    delta_pct REAL NOT NULL,
-    horizon_min INTEGER NOT NULL,
-    inserted_at TEXT NOT NULL
-);
-CREATE INDEX IF NOT EXISTS ix_moves_article ON price_moves(article_id);
-CREATE INDEX IF NOT EXISTS ix_moves_symbol ON price_moves(symbol);
-"""
-
 def init_db() -> None:
     """Initialize tables and indices."""
     with get_conn() as conn:
-        conn.executescript(SCHEMA_SQL)
+        with open(SCHEMA_PATH, "r", encoding="utf-8") as f:
+            conn.executescript(f.read())
+
+# ---------------------------------------------------------------------------
+# Introspection helpers (for orchestration)
+# ---------------------------------------------------------------------------
+
+def get_article_id_by_url(url: str) -> Optional[int]:
+    with get_conn() as conn:
+        row = conn.execute("SELECT id FROM articles WHERE url = ?", (url,)).fetchone()
+        return int(row["id"]) if row else None
+
+def has_sentiment(article_id: int) -> bool:
+    with get_conn() as conn:
+        row = conn.execute(
+            "SELECT 1 FROM sentiments WHERE article_id = ? LIMIT 1",
+            (article_id,),
+        ).fetchone()
+        return row is not None
 
 # ---------------------------------------------------------------------------
 # Simple upsert/save functions
