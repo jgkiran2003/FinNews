@@ -2,7 +2,9 @@
 .env*
 environment.yml
 venv/
+.venv/
 .python-version
+.env
 
 # Data and databases
 data/
@@ -50,3 +52,6 @@ reference/
 
 # Work in progress
 db_alchemy.py
+
+#bin
+.bin/

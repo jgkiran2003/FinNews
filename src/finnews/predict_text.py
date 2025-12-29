@@ -1,9 +1,21 @@
+import os
 import torch
+from pathlib import Path
 from transformers import AutoTokenizer, AutoModelForSequenceClassification
 
-model_path = "./sentiment_analysis_model" 
-tokenizer = AutoTokenizer.from_pretrained(model_path)
-model = AutoModelForSequenceClassification.from_pretrained(model_path)
+# 1. Define the path relative to this script
+# Going up to 'models' then into 'finbert_finetuned_v1'
+base_path = Path(__file__).parent.parent.parent / "dev" / "models" / "finbert_finetuned_v1"
+
+# 2. Convert to an absolute string and force forward slashes for Hugging Face
+model_path = str(base_path.resolve()).replace("\\", "/")
+
+print(f"Loading model from: {model_path}")
+
+# 3. Load model and tokenizer
+# local_files_only=True prevents it from trying to check the internet
+tokenizer = AutoTokenizer.from_pretrained(model_path, local_files_only=True)
+model = AutoModelForSequenceClassification.from_pretrained(model_path, local_files_only=True)
 
 
 def predict_sentiment(text):
@@ -23,5 +35,3 @@ if __name__ == "__main__":
     Citing these positive trends, the management team has upwardly revised its forecast for the full fiscal year and remains confident in its ability to deliver strong shareholder value.
     """
     predict_sentiment(sample_text)
-
-

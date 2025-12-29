@@ -1,5 +1,5 @@
-import news_api_fetcher
-# import news_scraper
+from news_adapter import NewsAPIClientAdapter
+# import news_api_fetcher
 import predict_text
 
 # Prefer package import; fall back to relative when run as module
@@ -15,11 +15,14 @@ def main_loop():
         # Optionally migrate legacy URLs once:
         # store.import_legacy_processed_urls()
 
-        articles = news_api_fetcher.main()
+        # Initialize adapter and fetch business news
+        adapter = NewsAPIClientAdapter()
+        articles = adapter.top_headlines(categories=['business'], countries=['us'], normalize=True)
 
         news_articles_found = 0
         for article in articles:
-            url = article['url']
+            url = article.get('url')
+            if not url: continue
             title = article.get('title') or ''
 
             # Check existence before upsert
@@ -28,10 +31,10 @@ def main_loop():
             # Normalize fields
             provider = "newsapi"
             external_id = None
-            published_at = article.get('publishedAt')
-            source = (article.get('source') or {}).get('name') if isinstance(article.get('source'), dict) else article.get('source')
+            published_at = article.get('published_at')
+            source = article.get('source')
             language = article.get('language')
-            tickers = None
+            tickers = article.get('tickers')
 
             article_id = store.upsert_article(
                 provider=provider,
@@ -42,7 +45,7 @@ def main_loop():
                 source=source,
                 language=language,
                 tickers=tickers,
-                raw_obj=article,
+                raw_obj=article.get('_raw', article),
             )
 
             is_new = existing_id is None
