@@ -2,7 +2,7 @@ import torch
 from transformers import AutoTokenizer, AutoModelForSequenceClassification
 
 # Convert to an absolute string and force forward slashes for Hugging Face
-model_path = "./sentiment_analysis_model"
+model_path = "./final_model/model"
 
 print(f"Loading model from: {model_path}")
 

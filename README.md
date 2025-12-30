@@ -60,6 +60,11 @@ Before running the application, ensure you have:
     NEWS_API_KEY=your_actual_api_key_here
     ```
 
+4. **Train model:** Run model training code once to create the model.
+    ```
+    python src/finnews/train_model.py
+    ```
+
 🖥️ Usage
 ---------
 
