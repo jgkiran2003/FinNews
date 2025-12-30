@@ -1,5 +1,4 @@
 from news_adapter import NewsAPIClientAdapter
-# import news_api_fetcher
 import predict_text
 
 # Prefer package import; fall back to relative when run as module

@@ -3,7 +3,6 @@ import pandas as pd
 import sqlite3
 import matplotlib.pyplot as plt
 import os
-from pathlib import Path
 
 # Page configuration
 st.set_page_config(
@@ -24,12 +23,9 @@ def get_db_path():
     current_dir = os.path.dirname(os.path.abspath(__file__))
 
     # 1. Check in the same directory (where app.py likely created it)
-    local_path = os.path.join(current_dir, DB_FILENAME)
+    local_path = os.path.join(current_dir, 'storage', DB_FILENAME)
     if os.path.exists(local_path):
         return local_path
-
-    # 2. Fallback: Check in 'storage' subdirectory
-    return os.path.join(current_dir, 'storage', DB_FILENAME)
 
 db_path = get_db_path()
 
@@ -86,7 +82,7 @@ else:
                     "title": "Headline",
                     "sentiment": "Sentiment"
                 },
-                wdith = "stretch",
+                width = "stretch",
                 hide_index=True
             )
 

@@ -34,24 +34,24 @@ tmp/
 *.log
 
 # Development and training files
-dev/checkpoints/
-dev/logs/
-dev/models/
-dev/data/*.csv
+dev/*/checkpoints/
+dev/*/logs/
+dev/*/model/
+dev/data/
 
 # Models and artifacts
 sentiment_analysis_model/
-fine_tuned_*/
 
 # Notebooks (except specific ones we want to keep)
 *.ipynb
-!dev/notebooks/*.ipynb
+!dev/evaluate_model.ipynb
+!dev/*/*.ipynb
 
 # Reference projects
-reference/
+references/
 
 # Work in progress
-db_alchemy.py
+src/finnews/storage/db_alchemy.py
 
 #bin
 .bin/

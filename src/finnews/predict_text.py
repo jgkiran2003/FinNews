@@ -1,18 +1,12 @@
-import os
 import torch
-from pathlib import Path
 from transformers import AutoTokenizer, AutoModelForSequenceClassification
 
-# 1. Define the path relative to this script
-# Going up to 'models' then into 'finbert_finetuned_v1'
-base_path = Path(__file__).parent.parent.parent / "dev" / "models" / "finbert_finetuned_v1"
-
-# 2. Convert to an absolute string and force forward slashes for Hugging Face
-model_path = str(base_path.resolve()).replace("\\", "/")
+# Convert to an absolute string and force forward slashes for Hugging Face
+model_path = "./sentiment_analysis_model"
 
 print(f"Loading model from: {model_path}")
 
-# 3. Load model and tokenizer
+# Load model and tokenizer
 # local_files_only=True prevents it from trying to check the internet
 tokenizer = AutoTokenizer.from_pretrained(model_path, local_files_only=True)
 model = AutoModelForSequenceClassification.from_pretrained(model_path, local_files_only=True)
@@ -25,6 +19,7 @@ def predict_sentiment(text):
         logits = model(**inputs).logits
     predicted_class_id = torch.argmax(logits, dim=1).item()
     predicted_label = model.config.id2label[predicted_class_id]
+    # print(f"Predicted sentiment: {predicted_label}")
     return predicted_label
 
 if __name__ == "__main__":

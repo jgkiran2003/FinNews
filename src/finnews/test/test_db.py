@@ -19,7 +19,7 @@ except Exception:
 
 def main():
     # Fresh start for the demo (delete DB file)
-    db_file = Path("storage/finnews.db")
+    db_file = Path("src/finnews/storage/finnews.db")
     if db_file.exists():
         db_file.unlink()
 

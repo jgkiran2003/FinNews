@@ -3,7 +3,7 @@ from datetime import datetime, timezone
 from typing import Any, Dict, Optional, List
 
 # Resolve paths
-DB_PATH = "storage/finnews.db"
+DB_PATH = "src/finnews/storage/finnews.db"
 SCHEMA_PATH = os.path.join(os.path.dirname(__file__), "schema.sql")
 os.makedirs(os.path.dirname(DB_PATH), exist_ok=True)
 
