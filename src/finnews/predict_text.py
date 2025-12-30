@@ -1,9 +1,15 @@
 import torch
 from transformers import AutoTokenizer, AutoModelForSequenceClassification
 
-model_path = "./sentiment_analysis_model" 
-tokenizer = AutoTokenizer.from_pretrained(model_path)
-model = AutoModelForSequenceClassification.from_pretrained(model_path)
+# Convert to an absolute string and force forward slashes for Hugging Face
+model_path = "./sentiment_analysis_model"
+
+print(f"Loading model from: {model_path}")
+
+# Load model and tokenizer
+# local_files_only=True prevents it from trying to check the internet
+tokenizer = AutoTokenizer.from_pretrained(model_path, local_files_only=True)
+model = AutoModelForSequenceClassification.from_pretrained(model_path, local_files_only=True)
 
 
 def predict_sentiment(text):
@@ -13,6 +19,7 @@ def predict_sentiment(text):
         logits = model(**inputs).logits
     predicted_class_id = torch.argmax(logits, dim=1).item()
     predicted_label = model.config.id2label[predicted_class_id]
+    # print(f"Predicted sentiment: {predicted_label}")
     return predicted_label
 
 if __name__ == "__main__":
@@ -23,5 +30,3 @@ if __name__ == "__main__":
     Citing these positive trends, the management team has upwardly revised its forecast for the full fiscal year and remains confident in its ability to deliver strong shareholder value.
     """
     predict_sentiment(sample_text)
-
-
