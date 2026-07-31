@@ -1,0 +1,47 @@
+# requirements-pinned.txt
+# Single, consolidated, pinned dependency set for FinNews.
+# Known-good on Python 3.11 (and 3.12). These versions are mutually compatible:
+#   transformers 4.57.x requires accelerate>=0.26.0; pin 1.1.x satisfies it.
+#   torch 2.4.x has stable cp311/cp312 Windows wheels.
+# Install via:  python -m pip install -r requirements-pinned.txt
+
+# ── Deep learning (pinned together — they must move as a set) ─────────────
+# IMPORTANT: torch is NOT listed here. It must be installed SEPARATELY for
+# GPU vs CPU — `pip install torch` gives a CPU-only wheel on Windows.
+#
+#   NVIDIA GPU (CUDA 12.8+ — required for RTX 50-series/Blackwell):
+#     pip install torch --index-url https://download.pytorch.org/whl/cu128
+#
+#   CPU-only (smaller, no GPU):
+#     pip install torch --index-url https://download.pytorch.org/whl/cpu
+#
+# setup_env.ps1 detects your GPU via nvidia-smi and installs the right one.
+# (If torch were listed here, `pip install -r` would pull the default CPU
+#  wheel and overwrite the GPU build — that's why it's excluded.)
+
+transformers==4.57.3
+accelerate==1.1.1
+tokenizers>=0.22.0,<0.23.0
+safetensors>=0.4.3
+
+# ── Data + training utilities ─────────────────────────────────────────────
+numpy>=1.26.0,<2.3.0
+pandas>=2.1.0
+scipy>=1.11.0
+scikit-learn>=1.4.0
+datasets>=2.19.0
+
+# ── Dashboard + ingestion ────────────────────────────────────────────────
+streamlit>=1.35.0
+plotly>=5.20.0
+yfinance>=0.2.40
+requests>=2.32.0
+python-dotenv>=1.0.0
+beautifulsoup4>=4.12.0
+newsapi-python>=0.2.7
+matplotlib>=3.8.0
+
+# NOTE: tensorflow is intentionally NOT included — it was in requirements.txt
+# but is never imported anywhere in the codebase. Adding it only bloats the
+# install and risks DLL conflicts with torch. If you need it later, add it
+# in its own venv.

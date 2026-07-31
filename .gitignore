@@ -1,0 +1,61 @@
+# Environment and local configuration
+.env*
+environment.yml
+venv/
+.venv/
+.python-version
+.env
+
+# Data and databases
+data/
+*.db
+
+# Python cache files
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+
+# VS Code settings
+.vscode/
+.github/copilot-instructions.md
+
+# Model files and checkpoints
+checkpoint-*/
+*.bin
+*.pth
+*.safetensors
+*.onnx
+model_weights/
+
+# Logs and temporary files
+logs/
+tmp/
+*.log
+
+# Development and training files
+dev/checkpoints/
+dev/logs/
+dev/models/
+dev/data/*.csv
+
+# Models and artifacts
+sentiment_analysis_model/
+fine_tuned_*/
+
+# Notebooks (except specific ones we want to keep)
+*.ipynb
+!dev/notebooks/*.ipynb
+
+# Reference projects
+reference/
+references/
+
+# Work in progress
+db_alchemy.py
+
+#bin
+.bin/
+
+# Bootstrap sentinel (cu128 install tracker)
+dev/.cuda_install_attempted
